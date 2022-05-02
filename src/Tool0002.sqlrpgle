@@ -5,7 +5,7 @@
 //
 // Created by: github.com/TickMogne, 2022.05.01
 //
-// Generates a list of query manager queries containing a text.
+// Generate a list of query manager queries containing a text.
 // See the command Tool0002.
 //
 // Compile parameters:

@@ -5,7 +5,7 @@
 //
 // Created by: github.com/TickMogne, 2022.05.01
 //
-// Generates a list of job descriptions whose library list contains one or all of the given libraries.
+// Generate a list of job descriptions whose library list contains one or all of the given libraries.
 // See the command Tool0001.
 //
 // Compile parameters:

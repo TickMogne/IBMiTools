@@ -5,7 +5,7 @@
 //
 // Created by: github.com/TickMogne, 2022.05.02
 //
-// Converts IFS SQL stream file to *QMQRY File.
+// Convert IFS SQL stream file to *QMQRY File.
 // See the command Tool0003.
 //
 // Compile parameters:
