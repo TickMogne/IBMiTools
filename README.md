@@ -39,4 +39,4 @@ Sources:
 
 - Enable NetServer user
 - Generate a list of physical file members containing a text
-- Generate a list of physival file dependencities with key list information
+- Generate a list of physical file dependencities with key list information
