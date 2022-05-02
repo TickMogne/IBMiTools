@@ -17,7 +17,7 @@ Sources:
 
 ### Tool0002
 
-**Generate a list of *QMQRY files containing a text.**
+**Generate a list of QMQRY files containing a text.**
 
 Case: You have an sql object (user defined function, table, view, ...) and you would like to know in which Query Manager Query file (*QMQRY) is used. 
 
@@ -27,7 +27,7 @@ Sources:
 
 ### Tool0003
 
-**Convert IFS SQL stream file to *QMQRY File.**
+**Convert IFS SQL stream file to QMQRY File.**
 
 Case: You have an IFS SQL stream file and you would like to use it with STRQMQRY.
 
