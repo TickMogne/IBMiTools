@@ -35,7 +35,7 @@ Sources:
 - Tool0003.cmd
 - Tool0003.sqlrpgle
 
-## Coming soon...##
+## Coming soon...
 
 - Enable NetServer user
 - Generate a list of physical file members containing a text
