@@ -35,8 +35,21 @@ Sources:
 - Tool0003.cmd
 - Tool0003.sqlrpgle
 
+### Tool0004
+
+**Generate a list of a physical file dependencies with key field list information.**
+
+Case: The Index Advisor reports - because of some SQL stamements - that you should create a new index for a table.
+You know that this table has already a lot of indexes, and you would like to check if you could find a logical file
+which could be used for this optimalisation.
+
+Sources:
+- Tool0004.cmd
+- Tool0004.rpgle
+
 ## Coming soon...
 
-- Enable NetServer user
 - Generate a list of physical file members containing a text
-- Generate a list of physical file dependencities with key list information
+- Generate a list of diabled NetServer users
+- Enable NetServer user
+
