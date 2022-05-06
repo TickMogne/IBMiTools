@@ -40,6 +40,7 @@ Dcl-Proc Tool0003;
   Dcl-S TmpPtr Pointer;
   Dcl-S Command Char(128);
   Dcl-Ds Error LikeDs(ERRC0100);
+  Dcl-S InString Ind Inz(*Off);
 
   Library = %Subst(QMQRY: 11: 10);
   File = %Subst(QMQRY: 1: 10);
@@ -104,7 +105,16 @@ Dcl-Proc Tool0003;
           OutPart = *blanks;
           OutPartLen = 0;
           // Get the next text without blanks
-          Dow ((LinePos <= LineLen) And (%Subst(Line: LinePos: 1) <> *Blank));
+          Dow (LinePos <= LineLen);
+            If (%Subst(Line: LinePos: 1) = '''');
+              If (InString = *On);
+                InString = *Off;
+              Else;
+                InString = *On;
+              EndIf;
+            ElseIf ((%Subst(Line: LinePos: 1) = *Blank) And (InString = *Off));
+              Leave;
+            EndIf;
             OutPartLen += 1;
             %Subst(OutPart: OutPartLen: 1) = %Subst(Line: LinePos: 1);
             LinePos += 1;
