@@ -97,7 +97,7 @@ Dcl-Proc Tool0003;
         Info = '-- original line nr. ' + %Char(LineNum);
         Exec Sql INSERT INTO qtemp/qmq1 VALUES(:Info);
 
-        // Split the stream file line into shorter (max. 79 length) lines
+        // Split the stream file line into shorter (max. 78 length) lines
         OutLine = *blanks;
         OutLineLen = 0;
         // Read until end of line
@@ -121,13 +121,13 @@ Dcl-Proc Tool0003;
           EndDo;
           // If text was found
           If (OutPartLen > 0);
-            // If the length of the text greater than 79
-            If (OutPartLen > 79);
+            // If the length of the text greater than 78
+            If (OutPartLen > 78);
               EscapeMessage(*Omit: 'The line number ' + %Char(LineNum) + ' can''t be splitted to a valid source file line.' +
-                ' Please use some possible spaces to split the expressions into text parts with maximal length of 79.');
+                ' Please use some possible spaces to split the expressions into text parts with maximal length of 78.');
             EndIf;
-            // If the length of the line with the text greater than 79, write the line without the text
-            If ((OutLineLen + OutPartLen) > 79);
+            // If the length of the line with the text greater than 78, write the line without the text
+            If ((OutLineLen + OutPartLen) > 78);
               Exec Sql INSERT INTO qtemp/qmq1 VALUES(:OutLine);
               OutLine = *blanks;
               OutLineLen = 0;
