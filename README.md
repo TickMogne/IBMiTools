@@ -47,6 +47,23 @@ Sources:
 - Tool0004.cmd
 - Tool0004.rpgle
 
+### Tool0005
+
+**Write in a log file which program is opening a database file.**
+
+Case: You have a database file. You know (or not) that sometimes somebody is using this database file (may be just opening without any read) but you don't know who and when.
+- Trigger doesn't help because there is no record operation (for example the database file is empty)
+- Journal doesn't help because the file is already journalled for other cases (and the journals are managed/deleted automatically)
+
+Sources:
+- Tool0005.sqlrpgle
+
+Steps:
+1. Create a config data area (Positions 1-10: Library, 11-20: Filename).
+2. Create the log file (qgpl.tool0005log).
+3. Compile the Tool0005 program.
+4. Add exit program (QIBM_QDB_OPEN).
+
 ## Coming soon...
 
 - Generate a list of physical file members containing a text
