@@ -1,5 +1,17 @@
 **Free
 
+//
+// Tool0005
+//
+// Created by: github.com/TickMogne, 2022.05.10
+//
+// Write in a log file which program is opening a database file.
+// See below.
+//
+// Compile parameters:
+//  INCDIR('xxx/TMLib/src/') where xxx the parent library of the repository TMLib (github.com/TickMogne/TMLib)
+//
+
 // CRTDTAARA DTAARA(QGPL/TOOL0005)
 //           TYPE(*CHAR)          
 //           LEN(20)              

@@ -64,9 +64,26 @@ Steps:
 3. Compile the Tool0005 program.
 4. Add exit program (QIBM_QDB_OPEN).
 
+### Tool0006
+
+**Generate a list of diabled NetServer users.**
+
+Case: You would like get a list about the disabled NetServer users (without Navigator for i).
+
+Sources:
+- Tool0006.rpgle
+
+### Tool0007
+
+**Enable disabled NetServer user.**
+
+Case: You would like to enable a disabled NetServer user (without Navigator for i).
+
+Sources:
+- Tool0007.cmd
+- Tool0007.rpgle
+
 ## Coming soon...
 
 - Generate a list of physical file members containing a text
-- Generate a list of diabled NetServer users
-- Enable NetServer user
 
