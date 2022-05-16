@@ -69,8 +69,10 @@ Steps:
 **Generate a list of diabled NetServer users.**
 
 Case: You would like get a list about the disabled NetServer users (without Navigator for i).
+You can get the list into a spool file or in a physical file.
 
 Sources:
+- Tool0006.cmd
 - Tool0006.rpgle
 
 ### Tool0007
@@ -82,6 +84,17 @@ Case: You would like to enable a disabled NetServer user (without Navigator for 
 Sources:
 - Tool0007.cmd
 - Tool0007.rpgle
+
+### Tool0008a, Tool0008b
+
+**Collect information about FTP activities.**
+
+Case: You would like to know (and collect into a table) who and wenn is loggin into the system with ftp
+and what he/she is doing with which files/folders.
+
+Sources:
+- Tool0008a.sqlrpgle
+- Tool0008b.sqlrpgle
 
 ## Coming soon...
 
