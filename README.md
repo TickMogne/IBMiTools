@@ -96,7 +96,39 @@ Sources:
 - Tool0008a.sqlrpgle
 - Tool0008b.sqlrpgle
 
+### Tool0009
+
+**Generate a list of physical file members containing a text.**
+
+Case: You have a physical file with a lot of members containing stream text content (for example EDI files in EDIFACT format).
+You would like to search for text in the file but because the stream is 'splitted' to fix record length, it can happen,
+that the text you must find is splitted to in two records. And you will not to lose this occurrances.
+
+Features:
+- Output: display (F12: skip this member, F3: exit the search) or print.
+- Sort of members by creation date (ascendings or descendings) to allow to find the oldest or the newest member first.
+- Case sensitive or unsensitive search.
+- Show or skip multiple occurrences in one member.
+
+Sources:
+- Tool0009.cmd
+- Tool0009.rpgle
+
+### Tool0010
+
+**Exit program for ODBC connect (to protocol or deny requests).**
+
+Case: You would like to know (and collect into a table) who and how (ODBC, JDBC, OLE DB, .NET) is connection to your system.
+This exit point allows you to allow or block requests.
+
+Features:
+- Collect information in the table QGPL.ODBCLOG.
+- Allow or deny connect requests.
+
+Sources:
+- Tool0010.sqlrpgle
+
 ## Coming soon...
 
-- Generate a list of physical file members containing a text
+
 
