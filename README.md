@@ -3,7 +3,7 @@
 Some usefull IBMi tools.
 If you have any new idea just let me know.
 
-## Tools:
+## Tools
 
 ### Tool0001
 
@@ -127,6 +127,19 @@ Features:
 
 Sources:
 - Tool0010.sqlrpgle
+
+### Tool0011
+
+**Searching for message definition**
+
+Case: You have a dump file with a message id you haven't seen before. First you are trying to use the DSPMSGD command with the QCPFMSG message file to get more information but the message file QCPFMSG doesn't contain the message id you are looking for. The question is in which message file is this message id defined?
+
+Features:
+- Allow to search in all or only in defined message files.
+
+Sources:
+- Tool0011.cmd
+- Tool0011.rpgle
 
 ## Coming soon...
 
