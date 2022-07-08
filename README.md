@@ -141,6 +141,15 @@ Sources:
 - Tool0011.cmd
 - Tool0011.rpgle
 
+### Tool0012
+
+**Retrieve the user's SMTP-Name (see the command WRKNAMSMTP).**
+
+Case: You defined the user's SMTP-Name with the command WRKNAMSMTP and you would like to retrieve this information.
+
+Sources:
+- Tool0012.sqlrpgle
+
 ## Coming soon...
 
 
