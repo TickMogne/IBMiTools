@@ -150,6 +150,25 @@ Case: You defined the user's SMTP-Name with the command WRKNAMSMTP and you would
 Sources:
 - Tool0012.sqlrpgle
 
+### Tool0013
+
+**Update objects authorities.**
+
+Case: You created a new user (for example for odbc connection) and you would like to set the right authorities, that this user can read some objects (authority USE) and will be excluded (authority EXCLUDE) from the rest of the objects (except from the system objects).
+
+Sources:
+- Tool0013.rpgle
+
+### Tool0014
+
+**Delete old journal receivers.**
+
+Case: You would like to delete the journal receivers for a journal which are not attached and were attached before x days. This tool doesn't delete the last 2 receivers (the last may be attached and the seconds last should be not touched yet).
+
+Sources:
+- Tool0014.rpgle
+- Tool0014.cmd
+
 ## Coming soon...
 
 
