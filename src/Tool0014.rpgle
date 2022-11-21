@@ -5,7 +5,7 @@
 //
 // Created by: github.com/TickMogne, 2022.11.18
 //
-// Delete old journal receivers.
+// Delete old detached journal receivers.
 //
 // Compile parameters:
 //  INCDIR('xxx/TMLib/src/') where xxx the parent library of the repository TMLib (github.com/TickMogne/TMLib)
@@ -58,7 +58,7 @@ Dcl-Proc Tool0014;
   End-Ds;
   Dcl-S i Int(10);
   Dcl-S dt1 Timestamp Inz(*Sys);
-  Dcl-S dt2 Timestamp;
+  Dcl-S dt2 Timestamp Inz(*Sys);
   Dcl-S diff Int(10);
   Dcl-S Command Char(256);
 
@@ -76,20 +76,12 @@ Dcl-Proc Tool0014;
     If (RJRN0100.NumberOfKeys = 1);
       // Set the pointer for RJRN0100Key
       RJRN0100KeyPointer = %Addr(RJRN0100) + RJRN0100.OffsetToInformation + 4;
-      // Set The pointer for RJRN0100Key1Info entry
-      RJRN0100Key1InfoPointer = RJRN0100KeyPointer + RJRN0100Key.Offset + RJRN0100Key.LengthHeader;
-      i = 0;
-      // Loop through the entries
-      Dow i < RJRN0100Key.NumberOfEntries - 2;
+      // Set the pointer for the last RJRN0100Key1Info entry
+      RJRN0100Key1InfoPointer = RJRN0100KeyPointer + RJRN0100Key.Offset + RJRN0100Key.LengthHeader + (RJRN0100Key.NumberOfEntries-1) * RJRN0100Key.LengthOfEntry;
+      i = RJRN0100Key.NumberOfEntries;
+      Dow (i > 0);
         // Check if not attached
         If (RJRN0100Key1Info.Status <> '1');
-          dt2 = %Timestamp('20' +
-                           %Subst(RJRN0100Key1Info.AttachedDateTime: 2: 2) + '-' +
-                           %Subst(RJRN0100Key1Info.AttachedDateTime: 4: 2) + '-' +          
-                           %Subst(RJRN0100Key1Info.AttachedDateTime: 6: 2) + '-' +          
-                           %Subst(RJRN0100Key1Info.AttachedDateTime: 8: 2) + '.' +          
-                           %Subst(RJRN0100Key1Info.AttachedDateTime: 10: 2) + '.' +          
-                           %Subst(RJRN0100Key1Info.AttachedDateTime: 12: 2) + '.000000');
           // Check the difference between dt1 and dt2
           diff = %Diff(dt1: dt2: *DAYS);
           // Check if it should be deleted
@@ -101,9 +93,17 @@ Dcl-Proc Tool0014;
             EndMon;            
           EndIf;
         EndIf;
+        // Save the attaced date and time, actually the detach date and time of the previous journal receiver
+        dt2 = %Timestamp('20' +
+                         %Subst(RJRN0100Key1Info.AttachedDateTime: 2: 2) + '-' +
+                         %Subst(RJRN0100Key1Info.AttachedDateTime: 4: 2) + '-' +          
+                         %Subst(RJRN0100Key1Info.AttachedDateTime: 6: 2) + '-' +          
+                         %Subst(RJRN0100Key1Info.AttachedDateTime: 8: 2) + '.' +          
+                         %Subst(RJRN0100Key1Info.AttachedDateTime: 10: 2) + '.' +          
+                         %Subst(RJRN0100Key1Info.AttachedDateTime: 12: 2) + '.000000');
         // Shift the entry pointer
-        RJRN0100Key1InfoPointer = RJRN0100Key1InfoPointer + RJRN0100Key.LengthOfEntry;
-        i = i + 1;
+        RJRN0100Key1InfoPointer = RJRN0100Key1InfoPointer - RJRN0100Key.LengthOfEntry;
+        i = i - 1;
       EndDo;
     Else;
       EscapeMessage(*Omit: 'Key Information is not available.');

@@ -161,9 +161,9 @@ Sources:
 
 ### Tool0014
 
-**Delete old journal receivers.**
+**Delete old detached journal receivers.**
 
-Case: You would like to delete the journal receivers for a journal which are not attached and were attached before x days. This tool doesn't delete the last 2 receivers (the last may be attached and the seconds last should be not touched yet).
+Case: You would like to delete the journal receivers for a journal which are not attached and were detached before x days.
 
 Sources:
 - Tool0014.rpgle
