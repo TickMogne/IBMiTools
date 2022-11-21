@@ -61,6 +61,8 @@ Dcl-Proc Tool0014;
   Dcl-S dt2 Timestamp Inz(*Sys);
   Dcl-S diff Int(10);
   Dcl-S Command Char(256);
+  Dcl-S MessageKey Char(4);
+  Dcl-S Message Char(12);
 
   // Retrieve Journal Information
   QjoRetrieveJournalInformation(RJRN0100: %Size(RJRN0100): Journal: 'RJRN0100': InformationToRetrieve: Error);
@@ -87,20 +89,18 @@ Dcl-Proc Tool0014;
           // Check if it should be deleted
           If (diff > NumberOfDaysToKeep);
             Command = 'DLTJRNRCV JRNRCV(' + %Trim(RJRN0100Key1Info.Library) + '/' + %Trim(RJRN0100Key1Info.Name) + ') DLTOPT(*IGNINQMSG)';
+            Message = 'Journal receiver ' + %Trim(RJRN0100Key1Info.Name) + ' in library ' + %Trim(RJRN0100Key1Info.Library) + ' was ';
             Monitor;
               qcmdexc(Command: %Len(%Trim(Command)));
             On-Error;
+              Message = Message + 'not ';
             EndMon;            
+            Message = Message + 'deleted.';
+            qmhsndm('': '': Message: 10: '*INFO': 'QHST      *LIBL': 1: '': MessageKey: Error);
           EndIf;
         EndIf;
         // Save the attaced date and time, actually the detach date and time of the previous journal receiver
-        dt2 = %Timestamp('20' +
-                         %Subst(RJRN0100Key1Info.AttachedDateTime: 2: 2) + '-' +
-                         %Subst(RJRN0100Key1Info.AttachedDateTime: 4: 2) + '-' +          
-                         %Subst(RJRN0100Key1Info.AttachedDateTime: 6: 2) + '-' +          
-                         %Subst(RJRN0100Key1Info.AttachedDateTime: 8: 2) + '.' +          
-                         %Subst(RJRN0100Key1Info.AttachedDateTime: 10: 2) + '.' +          
-                         %Subst(RJRN0100Key1Info.AttachedDateTime: 12: 2) + '.000000');
+        dt2 = %Date(%Subst(RJRN0100Key1Info.AttachedDateTime:1:7):*cymd0) + %Time(%Subst(RJRN0100Key1Info.AttachedDateTime:8:6):*hms0);        
         // Shift the entry pointer
         RJRN0100Key1InfoPointer = RJRN0100Key1InfoPointer - RJRN0100Key.LengthOfEntry;
         i = i - 1;
