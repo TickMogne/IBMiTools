@@ -1,0 +1,58 @@
+     A*
+     A                                      INDARA
+     A*
+     A          R TOOL0015A
+     A*
+     A                                      OVERLAY
+     A                                      CSRLOC(DHLINE DHPOSI)
+     A                                      RTNCSRLOC(*WINDOW &DHLINE &DHPOSI)
+     A                                      CF01(01) CF02(02) CF03(03) CF04(04)
+     A                                      CF05(05) CF06(06) CF07(07) CF08(08)
+     A                                      CF09(09) CF10(10) CF11(11) CF12(12)
+     A                                      CF13(13) CF14(14) CF15(15) CF16(16)
+     A                                      CF17(17) CF18(18) CF19(19) CF20(20)
+     A                                      CF21(21) CF22(22) CF23(23) CF24(24)
+     A                                      PAGEUP(31) PAGEDOWN(32)
+     A*
+     A            DHLINE         3  0H
+     A            DHPOSI         3  0H
+     A*
+     A            TITL78        78      1  2COLOR(WHT)                                
+     A*
+     A                                  2  2'                                  -
+     A                                                                         -
+     A                                               ' 
+     A                                      DSPATR(UL)
+     A            HEAD78        78A     3  2COLOR(BLU)
+     A                                      DSPATR(UL)
+     A            DSLA01        78A     4  2  
+     A            DSLA02        78A     5  2  
+     A            DSLA03        78A     6  2  
+     A            DSLA04        78A     7  2  
+     A            DSLA05        78A     8  2  
+     A            DSLA06        78A     9  2  
+     A            DSLA07        78A    10  2  
+     A            DSLA08        78A    11  2  
+     A            DSLA09        78A    12  2  
+     A            DSLA10        78A    13  2  
+     A            DSLA11        78A    14  2  
+     A            DSLA12        78A    15  2  
+     A            DSLA13        78A    16  2  
+     A            DSLA14        78A    17  2  
+     A            DSLA15        78A    18  2  
+     A            DSLA16        78A    19  2  
+     A            DSLA17        78A    20  2  
+     A            DSLA18        78A    21  2  
+     A*
+     A                                 22  2'                                  -
+     A                                                                         -
+     A                                               ' 
+     A                                      DSPATR(UL)
+     A*
+     A            KEYS78        78A    23  2COLOR(BLU)
+     A*
+     A          R TOOL0015X
+     A*
+     A            DHLINE         3  0H
+     A            DHPOSI         3  0H
+     A*

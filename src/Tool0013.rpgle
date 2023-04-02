@@ -38,7 +38,7 @@ Dcl-Ds DefinitionEntry Qualified;
   Action Char(10) Pos(38);
 End-Ds;
 
-Dcl-Ds Definition LikeDs(DefinitionEntry) Dim(10);
+Dcl-Ds Definition LikeDs(DefinitionEntry) Dim(22);
 
 // Main procedure
 Dcl-Proc Tool0013;
@@ -71,7 +71,19 @@ Dcl-Proc Tool0013;
   Definition(7)  = 'QLIK      QLIK      *ALL      *ALL   *SKIP     ';
   Definition(8)  = 'QLIK      QGPL      *ALL      *ALL   *EXCLUDE  ';
   Definition(9)  = 'QLIK      QFTP*     *ALL      *ALL   *EXCLUDE  ';
-  Definition(10) = 'QLIK      RHDBD_21  LIEF      *FILE  *USE      ';
+  Definition(10) = 'QLIK      RHDBD_21  ATZU      *FILE  *USE      ';
+  Definition(11) = 'QLIK      RHDBD_21  BEKN      *FILE  *USE      ';
+  Definition(12) = 'QLIK      RHDBD_21  BEPM      *FILE  *USE      ';
+  Definition(13) = 'QLIK      RHDBD_21  KDST      *FILE  *USE      ';
+  Definition(14) = 'QLIK      RHDBD_21  LGBS      *FILE  *USE      ';
+  Definition(15) = 'QLIK      RHDBD_21  LGBW      *FILE  *USE      ';
+  Definition(16) = 'QLIK      RHDBD_21  LIEF      *FILE  *USE      ';
+  Definition(17) = 'QLIK      RHDBD_21  LPKO      *FILE  *USE      ';
+  Definition(18) = 'QLIK      RHDBD_21  LPLI      *FILE  *USE      ';
+  Definition(19) = 'QLIK      RHDBD_21  LPLP      *FILE  *USE      ';
+  Definition(20) = 'QLIK      RHDBD_21  LPMT      *FILE  *USE      ';
+  Definition(21) = 'QLIK      RHDBD_21  TEIL      *FILE  *USE      ';
+  Definition(22) = 'QLIK      RHDBD_21  WAEI      *FILE  *USE      ';
 
   // Create user space
   CreateUserSpace(UserSpaceName: Error);

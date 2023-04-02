@@ -169,6 +169,56 @@ Sources:
 - Tool0014.rpgle
 - Tool0014.cmd
 
+### Tool0015
+
+**Show a list result on the display.**
+
+Case: You are using some tools interactive and these tools should show some list result. You wouldn't like to do for each tool own display file and codes.
+This programm shows a list provided in a user index file (*USRIDX).
+
+Sources:
+- Tool0015.rpgle
+- Tool0015.dspf
+
+Features:
+- The definition will be stored in a data area and the program will be called with the name of the data area as a parameter.
+- The definition of the data area:
+    Dcl-Ds Tool0015DataArea Qualified;
+      UserIndexName Char(20);
+      NumberOfViews Int(10);
+      NumberOfRecords Int(10);
+      Title Char(78);
+      Header1 Char(78);
+      // more Headers
+    End-Ds;
+
+### Tool0016
+
+**List jobs they are locking a physical or logical file.**
+
+Case: You would like to reorganise a physical file using the RGZPFM command but you receive an error CPF3202 (file in use). If you check the locks with the WRKOBJLCK command you don't see any jobs they are locking this file. In this case one or more dependent files (for example logical files) have lock. This tool prints a list (created in a *USRIDX file) of all jobs (sorted by user name) they locks the file itself or its dependent files.
+
+Sources:
+- Tool0016.rpgle
+- Tool0016.cmd
+
+Features:
+- This program uses Tool0015 to display the result
+
+### Tool0017 ###
+
+**List the journalled physical files in a journal.**
+
+Case: You had to start journalling some physical files. After starting you used the command WRKJRN to check for which files did you start the journalling. Some weeks later you wanted to use WRKJRN again to show the files and you recognised that not only the physical files are listed now but all logical files they are in relation to the physical files. But you are interested about a short list of the physical files.
+
+Sources:
+- Tool0017.dspf
+- Tool0017.rpgle
+- Tool0017.cmd
+
+Features:
+- This program uses Tool0015 to display the result
+
 ## Coming soon...
 
 
