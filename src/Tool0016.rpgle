@@ -24,6 +24,8 @@ Dcl-Ds Tool0015DataArea Qualified;
   UserIndexName Char(20);
   NumberOfViews Int(10);
   NumberOfRecords Int(10);
+  ReturnKey Char(1);
+  Refresh Ind;  
   Title Char(78);
   Header1 Char(78);
   // more Headers
@@ -35,6 +37,7 @@ Dcl-Ds Tool0015Record Qualified;
   // more Lines
 End-Ds;
 Dcl-S UserIndexName Char(20);
+Dcl-S Quit Ind;
 
 // Main procedure
 Dcl-Proc Tool0016;
@@ -54,88 +57,98 @@ Dcl-Proc Tool0016;
 
   Clear Tool0015DataArea;
   Tool0015DataArea.NumberOfViews = 1;
+  Tool0015DataArea.ReturnKey = x'00';
   Tool0015DataArea.Title = 'List of jobs they are locking the file ' +
     %Trim(%Subst(QFile: 11: 10)) + '/' + %Trim(%Subst(QFile: 1: 10));
   Tool0015DataArea.Header1 = 'Job user    Job name    Job number';  
+  Tool0015DataArea.Refresh = *On;
 
-  // Create user index
-  UserIndexName = CreateQualifiedTempFileName();
-  quscrtui(UserIndexName: 'PF': 'F': 26: '1': 26: '1': '0': '*EXCLUDE': '': '*YES':
-    Error);
-  If (Error.BytesAvailable > 0); // Check error
-    EscapeMessage(Error);
-    Return;
-  EndIf;
+  Quit = *Off;
 
-  // Create user space 1
-  UserSpaceName1 = CreateQualifiedTempFileName();
-  CreateUserSpace(UserSpaceName1: Error);
-  If (Error.BytesAvailable > 0); // Check error
-    EscapeMessage(Error);
-    Return;
-  EndIf;
+  DoW (Not Quit);
 
-  // List database relations
-  qdbldbr(UserSpaceName1: 'DBRL0100': QFile: '*FIRST': '*ALL': Error);
-  If (Error.BytesAvailable > 0); // Check error
-    EscapeMessage(Error);
-    Return;
-  EndIf;
+    Tool0015DataArea.NumberOfRecords = 0;
 
-  // Retrieve the user space pointer
-  qusptrus(UserSpaceName1: UserSpaceDataPointer: Error);
-  If (Error.BytesAvailable > 0); // Check error
-    EscapeMessage(Error);
-    Return;
-  EndIf;
+    // Create user index
+    UserIndexName = CreateQualifiedTempFileName();
+    quscrtui(UserIndexName: 'PF': 'F': 26: '1': 26: '1': '0': '*EXCLUDE': '': '*YES':
+      Error);
+    If (Error.BytesAvailable > 0); // Check error
+      EscapeMessage(Error);
+      Return;
+    EndIf;
 
-  // Init the entry pointer
-  UserSpaceEntryPointer = UserSpaceDataPointer + UserSpaceHeader.OffsetListData;
+    // Create user space 1
+    UserSpaceName1 = CreateQualifiedTempFileName();
+    CreateUserSpace(UserSpaceName1: Error);
+    If (Error.BytesAvailable > 0); // Check error
+      EscapeMessage(Error);
+      Return;
+    EndIf;
 
-  // Create user space 2
-  UserSpaceName2 = CreateQualifiedTempFileName();
-  CreateUserSpace(UserSpaceName2: Error);
-  If (Error.BytesAvailable > 0); // Check error
-    EscapeMessage(Error);
-    Return;
-  EndIf;
+    // List database relations
+    qdbldbr(UserSpaceName1: 'DBRL0100': QFile: '*FIRST': '*ALL': Error);
+    If (Error.BytesAvailable > 0); // Check error
+      EscapeMessage(Error);
+      Return;
+    EndIf;
 
-  // Check the file itself
-  CheckLock(UserSpaceName2: QFile: Error);
-  If (Error.BytesAvailable > 0); // Check error
-    EscapeMessage(Error);
-    Return;
-  EndIf; 
+    // Retrieve the user space pointer
+    qusptrus(UserSpaceName1: UserSpaceDataPointer: Error);
+    If (Error.BytesAvailable > 0); // Check error
+      EscapeMessage(Error);
+      Return;
+    EndIf;
 
-  // Check if dependencies were found
-  If UserSpaceHeader.NumberOfEntries > 0;
-    // Process all dependent file
-    For i = 1 To UserSpaceHeader.NumberOfEntries;
+    // Init the entry pointer
+    UserSpaceEntryPointer = UserSpaceDataPointer + UserSpaceHeader.OffsetListData;
 
-      If DBRL0100.DepQFileName <> '*NONE';
-        CheckLock(UserSpaceName2: DBRL0100.DepQFileName: Error);
-        If (Error.BytesAvailable > 0); // Check error
-          EscapeMessage(Error);
-          Return;
+    // Create user space 2
+    UserSpaceName2 = CreateQualifiedTempFileName();
+    CreateUserSpace(UserSpaceName2: Error);
+    If (Error.BytesAvailable > 0); // Check error
+      EscapeMessage(Error);
+      Return;
+    EndIf;
+
+    // Check the file itself
+    CheckLock(UserSpaceName2: QFile: Error);
+    If (Error.BytesAvailable > 0); // Check error
+      EscapeMessage(Error);
+      Return;
+    EndIf; 
+
+    // Check if dependencies were found
+    If UserSpaceHeader.NumberOfEntries > 0;
+      // Process all dependent file
+      For i = 1 To UserSpaceHeader.NumberOfEntries;
+
+        If DBRL0100.DepQFileName <> '*NONE';
+          CheckLock(UserSpaceName2: DBRL0100.DepQFileName: Error);
+          If (Error.BytesAvailable > 0); // Check error
+            EscapeMessage(Error);
+            Return;
+          EndIf;
         EndIf;
-      EndIf;
 
-      // Shift the entry pointer
-      UserSpaceEntryPointer += UserSpaceHeader.SizeOfEntry;
-    EndFor;
-  EndIf;
+        // Shift the entry pointer
+        UserSpaceEntryPointer += UserSpaceHeader.SizeOfEntry;
+      EndFor;
+    EndIf;
 
-  // Delete user space 2
-  DeleteUserSpace(UserSpaceName2);
+    // Delete user space 2
+    DeleteUserSpace(UserSpaceName2);
 
-  // Delete user space 1
-  DeleteUserSpace(UserSpaceName1);
+    // Delete user space 1
+    DeleteUserSpace(UserSpaceName1);
 
-  // Show the result with the Tool0015
-  ShowResult();
+    // Show the result with the Tool0015
+    ShowResult();
 
-  // Delete user index
-  qusdltui(UserIndexName: Error);
+    // Delete user index
+    qusdltui(UserIndexName: Error);
+
+  EndDo;
   
 End-Proc;
 
@@ -286,6 +299,15 @@ Dcl-Proc ShowResult;
 
   // Display the result
   Tool0015(DataAreaFileName);
+
+  Tool0015DataArea = RetrieveDataArea(DataAreaFileName: 1: %Size(Tool0015DataArea): Error);
+  If (Error.BytesAvailable > 0); // Check error
+    EscapeMessage(Error);
+    Return;
+  EndIf;
+  If (Tool0015DataArea.ReturnKey = x'03');
+    Quit = *On;
+  EndIf;
 
   // Delete the data area
   ExecuteCommand('DLTDTAARA DTAARA(' + %Trim(%Subst(DataAreaFileName: 11: 10)) + '/' +

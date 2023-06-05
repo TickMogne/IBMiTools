@@ -219,7 +219,14 @@ Sources:
 Features:
 - This program uses Tool0015 to display the result
 
+### Tool0018 ###
+
+**End all active jobs with a specific name.**
+
+Case: You would like to end a job but you don't know the user name and job id needed by the ENDJOB command.
+
+Sources:
+- Tool0018.rpgle
+- Tool0018.cmd
+
 ## Coming soon...
-
-
-

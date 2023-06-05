@@ -28,6 +28,8 @@ Dcl-Ds Tool0015DataArea Qualified;
   UserIndexName Char(20);
   NumberOfViews Int(10);
   NumberOfRecords Int(10);
+  ReturnKey Char(1);
+  Refresh Ind;  
   Title Char(78);
   Header1 Char(78);
   // more Headers
@@ -35,6 +37,7 @@ End-Ds;
 
 Dcl-Ds Indicators Len(99);
   F03 Ind Pos(3);
+  F05 Ind Pos(5);
   F09 Ind Pos(9);
   F10 Ind Pos(10);
   PAGEUP Ind Pos(31);
@@ -78,10 +81,12 @@ Dcl-S Message Char(80);
 Dcl-Ds QSysPrtLine Len(80) Qualified;
   Line Char(80) Pos(1);
 End-Ds;
+Dcl-S Quit Ind;
 
 ActiveView = 1;
 ActivePage = 1;
 Load = *On;
+Clear Indicators;
 
 // Put the cursor to the status line
 DHLINE = 24;
@@ -109,20 +114,27 @@ EndIf;
 // Init the display text
 TITL78 = CenterText(Tool0015DataArea.Title: 78);
 HEAD78 = Tool0015DataArea.Header1;
-KEYS78 = 'F3=Exit  F9=Print';
+KEYS78 = 'F3=Exit';
+If (Tool0015DataArea.Refresh);
+  KEYS78 = %Trim(KEYS78) + '  F5=Refresh';
+EndIf;
+KEYS78 = %Trim(KEYS78) + '  F9=Print';
 If (Tool0015DataArea.NumberOfViews > 1);
   KEYS78 = %Trim(KEYS78) + '  F10=Change view';
 EndIf;
 
-Open Tool0015;
+If (Tool0015DataArea.ReturnKey = x'00');
+  Open Tool0015;
+EndIf;
 Write TOOL0015X;
 // Write the number of records in the status line
 Message = 'Number of records: ' + %Char(Tool0015DataArea.NumberOfRecords);
 qmhsndpm('CPF9897': CPFMessageFile: Message: %Len(%Trim(Message)): '*STATUS': '*EXT': 0: '': Error);
 
 Clear Indicators;
-// Loop until F3 was pressed
-DoW (F03 = *Off);
+// Loop until F3 or F5 was pressed
+Quit = *Off;
+DoW (Quit = *Off);
   // Load the content of the page
   If (Load = *On);
     Clear DSLA;
@@ -130,8 +142,8 @@ DoW (F03 = *Off);
     Key = (ActivePage-1) * 18 + 1;
     Dow ((I <= 18) And (Key <= Tool0015DataArea.NumberOfRecords));
       memcpy(%Addr(KeyChar): %Addr(Key): 4);
-      qusrtvui(Entry: %Size(Entry): Elo: 8: Ret: '': Tool0015DataArea.UserIndexName: 'IDXE0100': 1: 1:
-        KeyChar: 4: 0: Error);
+      qusrtvui(Entry: %Size(Entry): Elo: 8: Ret: '': Tool0015DataArea.UserIndexName: 'IDXE0100': 1:
+        1: KeyChar: 4: 0: Error);
       DSLA(I) = %Subst(Entry: 13 + (ActiveView-1)*78: 78);
       I += 1;
       Key += 1;
@@ -154,6 +166,12 @@ DoW (F03 = *Off);
     Else;
       qmhsndpm('CPD6A69': CPFMessageFile: '': 0: '*STATUS': '*EXT': 0: '': Error);
     EndIf;
+  ElseIf (F03 = *On); // F3 - exit - was pressed
+    Tool0015DataArea.ReturnKey = x'03';
+    Quit = *On;
+  ElseIf ((F05 = *On) And (Tool0015DataArea.Refresh = *On)); // F5 - refresh - was pressed
+    Tool0015DataArea.ReturnKey = x'05';
+    Quit = *On;
   ElseIf (F09 = *On); // F9 - print - was pressed
     Open QSysPrt;
     QSysPrtOverflow = *On;
@@ -183,8 +201,17 @@ DoW (F03 = *Off);
     Load = *On;
   EndIf;
 EndDo;
-Close Tool0015;
+If (Tool0015DataArea.ReturnKey = x'03');
+  Close Tool0015;
+EndIf;
 
 Dealloc HeaderPointer;
+
+ChangeDataArea(DataAreaName: %Addr(Tool0015DataArea.ReturnKey) - %Addr(Tool0015DataArea) + 1: 1:
+  Tool0015DataArea.ReturnKey: Error);
+If (Error.BytesAvailable > 0); // Check error
+  EscapeMessage(Error);
+  Return;
+EndIf;
 
 Return;

@@ -8,7 +8,8 @@
 // List the journalled physical files in a journal.
 //
 // Compile parameters:
-//  INCDIR('xxx/TMLib/src/') where xxx the parent library of the repository TMLib (github.com/TickMogne/TMLib)
+//  INCDIR('xxx/TMLib/src/') where xxx the parent library of the repository TMLib
+//  (github.com/TickMogne/TMLib)
 //
 
 Ctl-Opt DftActGrp(*No) Main(Tool0017) BndDir('TMLIB_M');
@@ -23,6 +24,8 @@ Dcl-Ds Tool0015DataArea Qualified;
   UserIndexName Char(20);
   NumberOfViews Int(10);
   NumberOfRecords Int(10);
+  ReturnKey Char(1);
+  Refresh Ind;  
   Title Char(78);
   Header1 Char(78);
   Header2 Char(78);
@@ -105,14 +108,14 @@ Dcl-Proc Tool0017;
 
   memcpy(%Addr(RJRN0100_Key_Information): RJRN0100_Pointer + RJRN0100.OffsetToInformation + 4:
     %Size(RJRN0100_Key_Information));
-//  memcpy(%Addr(RJRN0100_Key2_Header): RJRN0100_Pointer + RJRN0100.OffsetToInformation + 4 +
-//    RJRN0100_Key_Information.OffsetToInformation: RJRN0100_Key_Information.LengthOfHeader);
 
   // Init the data area values
   Clear Tool0015DataArea;
   DataAreaName = CreateQualifiedTempFileName();
   Tool0015DataArea.UserIndexName = CreateQualifiedTempFileName();
   Tool0015DataArea.NumberOfViews = 1;
+  Tool0015DataArea.ReturnKey = x'00';
+  Tool0015DataArea.Refresh = *Off;
   Tool0015DataArea.Title = 'Journaled Physical Files in Journal ' +
     %Trim(%Subst(QJournalFile: 11: 10)) + '/' + %Trim(%Subst(QJournalFile: 1: 10));
   Tool0015DataArea.Header1 = 'Library     File';
